@@ -1,8 +1,3 @@
-Here's a clean and professional `README.md` for your **Vehicle Plate Number Expiry Reminder System** website repo:
-
----
-
-````markdown
 # 🚗 Vehicle Plate Number Expiry Reminder System
 
 A web-based application built with Django to help users track and receive reminders before their vehicle plate numbers expire. The system supports user registration, vehicle management, automated email reminders, and GitHub Actions integration for scheduled tasks.
@@ -27,11 +22,11 @@ A web-based application built with Django to help users track and receive remind
 
 ## 🛠️ Tech Stack
 
-- **Backend:** Django 4.x, Python 3.10
-- **Frontend:** HTML, CSS (Bootstrap 5), JavaScript
-- **Database:** MySQL (via Aiven/PlanetScale)
-- **Scheduler:** GitHub Actions
-- **Email Delivery:** SMTP (Gmail supported)
+- **Backend:** Django 4.x, Python 3.10  
+- **Frontend:** HTML, CSS (Bootstrap 5), JavaScript  
+- **Database:** MySQL (via Aiven/PlanetScale)  
+- **Scheduler:** GitHub Actions  
+- **Email Delivery:** SMTP (Gmail supported)  
 
 ---
 
@@ -144,10 +139,3 @@ For support or suggestions, feel free to reach out via [email](mailto:infojonasj
 ## 📄 License
 
 This project is licensed under the MIT License.
-
-```
-
----
-
-Let me know if you'd like a section for contributing, screenshots, or production deployment instructions!
-```
