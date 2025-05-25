@@ -1,0 +1,201 @@
+{% extends 'base.html' %}
+{% block title %}Edit Vehicle{% endblock %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+  <div class="card shadow">
+    <div class="card-header bg-primary text-white">
+      <h4 class="mb-0">Edit Vehicle</h4>
+    </div>
+
+    <div class="card-body">
+      <form method="POST" enctype="multipart/form-data" id="vehicleForm">
+        {% csrf_token %}
+
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label for="id_vehicle_name" class="form-label">Vehicle Name</label>
+            {{ form.vehicle_name }}
+          </div>
+
+          <div class="col-md-6">
+            <label for="id_model" class="form-label">Model</label>
+            {{ form.model }}
+          </div>
+
+          <div class="col-md-6">
+            <label for="id_plate_number" class="form-label">Plate Number</label>
+            {{ form.plate_number }}
+          </div>
+
+          <div class="col-md-6">
+            <label for="id_registration_date" class="form-label">Registration Date</label>
+            {{ form.registration_date }}
+          </div>
+
+          <div class="col-md-6">
+            <label for="id_expiry_date" class="form-label">Expiry Date</label>
+            {{ form.expiry_date }}
+          </div>
+
+          <div class="col-md-6">
+            <label for="id_plate_image" class="form-label">Plate Image</label>
+            <input type="file" name="plate_image" id="id_plate_image" accept="image/*" style="display:none;">
+            <div class="input-group">
+              <input type="text" id="plateImageFilename" class="form-control" placeholder="No file chosen" readonly>
+              <button type="button" class="btn btn-outline-secondary" id="plateImageSelectBtn">Select Image</button>
+            </div>
+            {% if form.instance.plate_image %}
+              <img src="{{ form.instance.plate_image.url }}" alt="Current Plate" class="mt-2" style="max-width: 200px;">
+            {% endif %}
+          </div>
+
+          <div class="col-12 d-flex justify-content-center gap-3">
+            <button type="submit" class="btn btn-success" style="width: 200px;">Update Vehicle</button>
+            <a href="{% url 'dashboard' %}" class="btn btn-secondary" style="width: 200px;">Cancel</a>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Image Preview Modal -->
+<div class="modal fade" id="imagePreviewModal" tabindex="-1" aria-labelledby="imagePreviewModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content shadow-lg rounded">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="imagePreviewModalLabel">Image Preview</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <img id="previewImage" src="#" alt="Preview" style="max-width: 100%; max-height: 60vh;">
+      </div>
+      <div class="modal-footer justify-content-center">
+        <button type="button" class="btn btn-secondary" id="changeImageBtn">Change Image</button>
+        <button type="button" class="btn btn-primary" id="confirmImageBtn">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Validation Modal -->
+<div class="modal fade" id="validationModal" tabindex="-1" aria-labelledby="validationModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content shadow-lg rounded">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="validationModalLabel">
+          <i class="bi bi-exclamation-triangle-fill me-2"></i> Validation Error
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body d-flex align-items-center">
+        <i class="bi bi-exclamation-circle-fill text-danger fs-3 me-3"></i>
+        <span id="modalMessage" class="fs-6"></span>
+      </div>
+      <div class="modal-footer justify-content-center">
+        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Okay</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const vehicleInput = document.getElementById('id_vehicle_image');
+  const vehicleFilename = document.getElementById('vehicleImageFilename');
+  const vehicleSelectBtn = document.getElementById('vehicleImageSelectBtn');
+
+  const plateInput = document.getElementById('id_plate_image');
+  const plateFilename = document.getElementById('plateImageFilename');
+  const plateSelectBtn = document.getElementById('plateImageSelectBtn');
+
+  const previewImage = document.getElementById('previewImage');
+  const imagePreviewModal = new bootstrap.Modal(document.getElementById('imagePreviewModal'));
+  const changeImageBtn = document.getElementById('changeImageBtn');
+  const confirmImageBtn = document.getElementById('confirmImageBtn');
+
+  let currentInput = null;
+
+  vehicleSelectBtn.addEventListener('click', () => vehicleInput.click());
+  plateSelectBtn.addEventListener('click', () => plateInput.click());
+
+  function handleFileSelect(input, filenameElem) {
+    const file = input.files[0];
+    if (!file) return;
+
+    currentInput = input;
+    filenameElem.value = file.name;
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      previewImage.src = e.target.result;
+      imagePreviewModal.show();
+    };
+    reader.readAsDataURL(file);
+  }
+
+  vehicleInput.addEventListener('change', function () {
+    handleFileSelect(vehicleInput, vehicleFilename);
+  });
+
+  plateInput.addEventListener('change', function () {
+    handleFileSelect(plateInput, plateFilename);
+  });
+
+  changeImageBtn.addEventListener('click', function () {
+    imagePreviewModal.hide();
+    if (currentInput) {
+      currentInput.value = '';
+      currentInput.click();
+    }
+  });
+
+  confirmImageBtn.addEventListener('click', function () {
+    imagePreviewModal.hide();
+    currentInput = null;
+  });
+
+  const vehicleForm = document.getElementById('vehicleForm');
+  vehicleForm.addEventListener('submit', function (event) {
+    const registrationDate = document.getElementById('id_registration_date').value;
+    const expiryDate = document.getElementById('id_expiry_date').value;
+
+    if (!registrationDate || !expiryDate) return;
+
+    const regDate = new Date(registrationDate);
+    const expDate = new Date(expiryDate);
+
+    if (regDate.getTime() === expDate.getTime()) {
+      event.preventDefault();
+      showValidationModal("Registration and Expiry dates must not be the same.");
+      return false;
+    }
+
+    const msPerDay = 24 * 60 * 60 * 1000;
+    const diffDays = Math.floor((expDate - regDate) / msPerDay);
+
+    if (diffDays < 30) {
+      event.preventDefault();
+      showValidationModal("Expiry date must be at least 30 days after the registration date.");
+      return false;
+    }
+  });
+
+  function showValidationModal(message) {
+    document.getElementById('modalMessage').textContent = message;
+    const modal = new bootstrap.Modal(document.getElementById('validationModal'));
+    modal.show();
+  }
+});
+</script>
+{% endblock %}
+
+
+{% block footer %}
+<div class="text-center mt-4 border-top pt-3" style="background-color: #1a1a1a; color: #ffffff; padding: 20px 0;">
+  <p class="mb-0" style="margin: 0;">&copy; 2025 Plate Tracker. All rights reserved.</p>
+</div>
+{% endblock %}

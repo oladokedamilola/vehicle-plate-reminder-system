@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% block title %}Settings | Plate Tracker{% endblock %}
+
+{% block content %}
+<style>
+  .btn-top-right {
+    position: absolute;
+    top: 5px;
+    right: 0px;
+    padding: 8px 16px;
+    background-color: #0d6efd;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 500;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    transition: background-color 0.3s ease;
+    z-index: 100;
+  }
+
+  .btn-top-right:hover {
+    background-color: #0b5ed7;
+    color: white;
+  }
+</style>
+
+<div class="container py-5">
+
+  <div class="position-relative"> <!-- This wraps the card and positions the button properly -->
+    <a href="{% url 'dashboard' %}" class="btn-top-right">Back to dashboard</a>
+
+    <div class="card shadow-sm">
+      <div class="card-header bg-dark text-white">
+        <h5 class="mb-0"><i class="bi bi-gear me-2"></i>Notification Settings</h5>
+      </div>
+      <div class="card-body">
+        <form method="POST" novalidate>
+          {% csrf_token %}
+          <div class="mb-3 form-check">
+            {{ form.notify_by_email }}
+            <label class="form-check-label" for="{{ form.notify_by_email.id_for_label }}">{{ form.notify_by_email.label }}</label>
+          </div>
+          <div class="mb-3 form-check">
+            {{ form.notify_by_sms }}
+            <label class="form-check-label" for="{{ form.notify_by_sms.id_for_label }}">{{ form.notify_by_sms.label }}</label>
+          </div>
+          <div class="mb-3">
+            <label for="{{ form.reminder_days_before.id_for_label }}" class="form-label">
+              {{ form.reminder_days_before.label }}
+            </label>
+            {{ form.reminder_days_before }}
+          </div>
+
+          <button type="submit" class="btn btn-primary"><i class="bi bi-save me-1"></i> Save Settings</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  const emailCheckbox = document.getElementById("{{ form.notify_by_email.id_for_label }}");
+  const smsCheckbox = document.getElementById("{{ form.notify_by_sms.id_for_label }}");
+
+  emailCheckbox.addEventListener('change', function() {
+    if (this.checked) {
+      smsCheckbox.checked = false;
+    }
+  });
+
+  smsCheckbox.addEventListener('change', function() {
+    if (this.checked) {
+      emailCheckbox.checked = false;
+    }
+  });
+</script>
+{% endblock %}
+
+
+{% block footer %}
+<div class="text-center border-top pt-3" style="margin-top: 110px; background-color: #1a1a1a; color: #ffffff; padding: 20px 0;">
+  <p class="mb-0" style="margin: 0;">&copy; 2025 Plate Tracker. All rights reserved.</p>
+</div>
+{% endblock %}

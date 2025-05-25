@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Home | Plate Tracker{% endblock %}
+
+{% block content %}
+<!-- Hero Banner using Bootstrap Carousel -->
+<div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
+
+    <!-- Slide 1 -->
+    <div class="carousel-item active hero-slide" style="background-image: url('{% static 'images/slider1.png' %}');">
+      <div class="overlay"></div>
+      <div class="container text-center text-white d-flex flex-column justify-content-center align-items-center h-100">
+        <span class="fs-4 mb-2">Stay Ahead, <em>Stay Notified</em></span>
+        <h2 class="display-5 fw-bold">Never Miss<br>Your Plate Expiry Again</h2>
+      </div>
+    </div>
+
+    <!-- Slide 2 -->
+    <div class="carousel-item hero-slide" style="background-image: url('{% static 'images/slider2.jpg' %}');
+        background-size: contain; background-position: center; background-repeat: no-repeat;"> 
+      <div class="overlay"></div>
+      <div class="container text-center text-white d-flex flex-column justify-content-center align-items-center h-100">
+        <span class="fs-4 mb-2">Simple & Smart, <em>Reminders</em></span>
+        <h2 class="display-5 fw-bold">Track Your Plates<br>With Peace of Mind</h2>
+      </div>
+    </div>
+
+
+    <!-- Slide 3 -->
+    <div class="carousel-item hero-slide" style="background-image: url('{% static 'images/slider3.jpg' %}');">
+      <div class="overlay"></div>
+      <div class="container text-center text-white d-flex flex-column justify-content-center align-items-center h-100">
+        <span class="fs-4 mb-2">Your Vehicle, <em>Your Schedule</em></span>
+        <h2 class="display-5 fw-bold">Automated Alerts<br>On Time, Every Time</h2>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Controls -->
+  <button class="carousel-control-prev small-control" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next small-control" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+
+<!-- How It Works Section -->
+<section id="how-it-works" class="py-5 bg-light">
+  <div class="container text-center">
+    <h2 class="display-5 fw-bold mb-5">How It Works</h2>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="step mb-4">
+          <div class="mb-3">
+            <i class="bi bi-card-checklist" style="font-size: 3rem; color: #0d6efd;"></i>
+          </div>
+          <h5 class="fw-semibold">Step 1</h5>
+          <p>Register your vehicle by providing the plate number, expiry date, and contact info.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="step mb-4">
+          <div class="mb-3">
+            <i class="bi bi-bell" style="font-size: 3rem; color: #0d6efd;"></i>
+          </div>
+          <h5 class="fw-semibold">Step 2</h5>
+          <p>Get reminders before your vehicle's plate number expires—never miss a renewal.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="step mb-4">
+          <div class="mb-3">
+            <i class="bi bi-truck" style="font-size: 3rem; color: #0d6efd;"></i>
+          </div>
+          <h5 class="fw-semibold">Step 3</h5>
+          <p>Manage multiple vehicles with ease and get personalized alerts by email or SMS.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section id="features" class="py-5 bg-light">
+  <div class="container text-center">
+    <h2 class="display-5 fw-bold mb-5">Features & Benefits</h2>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm mb-4 h-100 d-flex flex-column align-items-center">
+          <img src="{% static 'images/feature1.jpg' %}" alt="Easy Registration" class="w-100 object-fit-cover" style="height: 60%;">
+          <div class="card-body text-center">
+            <h5 class="card-title fw-semibold">Easy Registration</h5>
+            <p class="card-text">Quickly register your vehicle with minimal input and get started instantly.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm mb-4 h-100 d-flex flex-column align-items-center">
+          <img src="{% static 'images/feature2.jpg' %}" alt="Multi-Vehicle" class="w-100 object-fit-cover" style="height: 60%;">
+          <div class="card-body text-center">
+            <h5 class="card-title fw-semibold">Multi-Vehicle Support</h5>
+            <p class="card-text">Keep track of all your vehicles from a single dashboard—reminders included.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm mb-4 h-100 d-flex flex-column align-items-center">
+          <img src="{% static 'images/feature3.jpg' %}" alt="Custom Reminders" class="w-100 object-fit-cover" style="height: 60%;">
+          <div class="card-body text-center">
+            <h5 class="card-title fw-semibold">Customizable Reminders</h5>
+            <p class="card-text">Choose how and when you want to receive expiry reminders—email, SMS, or both.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- Call to Action Section -->
+<section id="cta" class="py-5 bg-primary text-white text-center">
+  <div class="container">
+    <img src="{% static 'images/alert-bell.png' %}" alt="Reminder Icon" class="mb-4" width="70">
+    <h2 class="display-4 mb-3">Ready to Never Miss a Deadline Again?</h2>
+    <p class="fs-4 mb-4">Sign up now and get timely reminders for your vehicle's plate expiry dates!</p>
+    <a href="/register" class="btn btn-light btn-lg px-4">Register Your Vehicle</a>
+  </div>
+</section>
+
+
+
+
+{% endblock %}

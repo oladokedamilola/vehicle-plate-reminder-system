@@ -1,0 +1,176 @@
+  #flash-messages {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  width: auto;
+  max-width: 90%;
+  padding: 0 20px;
+}
+
+.messages {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.message {
+  padding: 12px 20px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  color: #fff;
+  font-weight: bold;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  animation: fadein 0.5s;
+}
+
+/* Message type styles */
+.message.success {
+  background-color: #28a745;
+}
+
+.message.error {
+  background-color: #dc3545;
+}
+
+.message.warning {
+  background-color: #ffc107;
+  color: #000;
+}
+
+.message.info {
+  background-color: #17a2b8;
+}
+
+/* Fade-out animation */
+@keyframes fadeout {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+
+      .navbar-dark .nav-link {
+        color: rgba(255, 255, 255, 0.85);
+        transition: color 0.3s ease, background-color 0.3s ease;
+        padding: 0.5rem 0.75rem;
+        border-radius: 0.25rem;
+      }
+      
+      .navbar-dark .nav-link:hover {
+        color: #ffc107; /* Bootstrap warning yellow or pick another e.g. #0dcaf0 for info blue */
+        background-color: rgba(255, 255, 255, 0.1); /* subtle hover background */
+      }
+      
+      .navbar-dark .nav-link.active {
+        color: #fff;
+        background-color: #dc3545; /* Bootstrap "danger" red */
+        font-weight: 600;
+      }
+      
+      .hero-slide {
+        height: 90vh;
+        background-size: cover;
+        background-position: center;
+        position: relative;
+      }
+      
+      .hero-slide .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5); /* dark overlay for text visibility */
+        z-index: 1;
+      }
+      
+      .hero-slide .container {
+        position: relative;
+        z-index: 2;
+      }
+      
+      .carousel-control-prev.small-control,
+      .carousel-control-next.small-control {
+        width: 4%;
+      }
+      
+      .carousel-control-prev-icon,
+      .carousel-control-next-icon {
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+      
+
+      /* Custom Preloader Styles */
+      #custom-preloader {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        background-color: #111; /* dark background */
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      .custom-preloader-inner .dot-loader {
+        display: flex;
+        gap: 12px;
+      }
+      
+      .custom-preloader-inner .dot-loader span {
+        width: 16px;
+        height: 16px;
+        background-color: #b03a48; /* brighter wine color */
+        border-radius: 50%;
+        animation: bounce 1.6s infinite ease-in-out;
+      }
+      
+      .custom-preloader-inner .dot-loader span:nth-child(2) {
+        animation-delay: 0.25s;
+      }
+      
+      .custom-preloader-inner .dot-loader span:nth-child(3) {
+        animation-delay: 0.5s;
+      }
+      
+      @keyframes bounce {
+        0%, 80%, 100% {
+          transform: translateY(0);
+        }
+        40% {
+          transform: translateY(-18px);
+        }
+      }
+
+
+
+
+       /* Enable dropdown on hover and keep it visible while hovering on the parent item */
+    .nav-item.dropdown:hover .dropdown-menu {
+      display: block;
+    }
+
+    .nav-item.dropdown .dropdown-menu {
+      margin-top: 0.5rem;
+      transition: opacity 0.3s ease;
+    }
+
+    /* Optional: Prevent accidental flicker on slow cursor movement */
+    .navbar-nav .dropdown:hover > .dropdown-menu {
+      display: block;
+    }
+/* Ensure dropdown is hidden by default */
+.dropdown-menu {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+/* Use .show class to display dropdown */
+.dropdown-menu.show {
+  display: block;
+  opacity: 1;
+}

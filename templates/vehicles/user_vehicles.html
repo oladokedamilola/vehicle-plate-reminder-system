@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}My Vehicles | Plate Tracker{% endblock %}
+
+{% block content %}
+<style>
+  .btn-top-right {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    padding: 8px 16px;
+    background-color: #0d6efd;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 500;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    transition: background-color 0.3s ease;
+    z-index: 100;
+  }
+
+  .btn-top-right:hover {
+    background-color: #0b5ed7;
+    color: white;
+  }
+</style>
+
+<div class="container mt-4 position-relative">
+  <!-- Back button -->
+  <a href="{% url 'dashboard' %}" class="btn-top-right">Back to dashboard</a>
+
+  <h2 class="mb-4">My Vehicles</h2>
+
+  {% if page_obj.object_list %}
+    <div class="d-flex flex-column gap-4">
+      {% for vehicle in page_obj %}
+        <div class="card shadow p-3 position-relative">
+          <!-- Update/Delete buttons top right -->
+          <div class="position-absolute top-0 end-0 m-3 d-flex gap-2">
+            <a href="{% url 'edit_vehicle' vehicle.id %}" class="btn btn-sm btn-warning">Update</a>
+            <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ vehicle.id }}">
+              Delete
+            </button>
+          </div>
+
+          <div class="row align-items-center">
+            <!-- Vehicle Info -->
+            <div class="col-md-9">
+              <h5 class="card-title">{{ vehicle.vehicle_name }}</h5>
+              <p class="card-text mb-0">
+                <strong>Model:</strong> {{ vehicle.model }}<br>
+                <strong>Plate Number:</strong> {{ vehicle.plate_number }}<br>
+                <strong>Registration:</strong> {{ vehicle.registration_date }}<br>
+                <strong>Expiry:</strong> {{ vehicle.expiry_date }}
+              </p>
+            </div>
+
+            <!-- Plate Image -->
+            <div class="col-md-3 text-center">
+              {% if vehicle.plate_image %}
+                <img src="{{ vehicle.plate_image.url }}" alt="Plate Image" class="img-fluid rounded shadow-sm border" style="max-height: 180px; object-fit: contain;">
+              {% else %}
+                <p class="text-muted">No plate image uploaded.</p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+        <!-- Delete Modal -->
+        <div class="modal fade" id="deleteModal{{ vehicle.id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ vehicle.id }}" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <form method="post" action="{% url 'delete_vehicle' vehicle.id %}">
+                {% csrf_token %}
+                <div class="modal-header">
+                  <h5 class="modal-title" id="deleteModalLabel{{ vehicle.id }}">Confirm Delete</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  Are you sure you want to delete <strong>{{ vehicle.vehicle_name }}</strong> with plate number <strong>{{ vehicle.plate_number }}</strong>?
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                  <button type="submit" class="btn btn-danger">Delete</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if page_obj.has_other_pages %}
+      <nav class="mt-4">
+        <ul class="pagination justify-content-center">
+          {% if page_obj.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?page=1">&laquo; First</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            </li>
+          {% endif %}
+
+          <li class="page-item disabled">
+            <span class="page-link">
+              Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+            </span>
+          </li>
+
+          {% if page_obj.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+    {% endif %}
+  {% else %}
+    <p>You haven't added any vehicles yet.</p>
+  {% endif %}
+</div>
+{% endblock %}
+
+
+
+
+
+{% block footer %}
+
+{% endblock %}

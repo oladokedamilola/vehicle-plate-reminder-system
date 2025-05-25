@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title %}Update Profile{% endblock %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+  <div class="card shadow">
+    <div class="card-header bg-primary text-white">
+      <h4 class="mb-0">Update Your Profile</h4>
+    </div>
+    <div class="card-body">
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="text-center mt-4">
+          <button type="submit" class="btn btn-success">Save Changes</button>
+        </div>
+      </form>
+
+      {% if user.profile_picture %}
+        <div class="text-center mt-3">
+          <img src="{{ user.profile_picture.url }}" alt="Current Profile Picture" class="img-thumbnail" style="max-width: 150px;">
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+
+{% block footer %}
+<div class="text-center mt-4 border-top pt-3" style="background-color: #1a1a1a; color: #ffffff; padding: 20px 0;">
+  <p class="mb-0" style="margin: 0;">&copy; 2025 Plate Tracker. All rights reserved.</p>
+</div>
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center" style="min-height: 100vh; background-color: #f8f9fa;">
+  <div class="card shadow p-4" style="width: 100%; max-width: 400px;">
+    <h4 class="text-center mb-4">Create an Account</h4>
+    <form method="POST">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+
+      <!-- Username -->
+      <div class="mb-3">
+        <label for="id_username" class="form-label">Username</label>
+        {{ form.username }}
+        {% if form.username.errors %}
+          <div class="text-danger small">{{ form.username.errors|striptags }}</div>
+        {% endif %}
+      </div>
+
+      <!-- Email -->
+      <div class="mb-3">
+        <label for="id_email" class="form-label">Email</label>
+        {{ form.email }}
+        {% if form.email.errors %}
+          <div class="text-danger small">{{ form.email.errors|striptags }}</div>
+        {% endif %}
+      </div>
+
+      <!-- Password -->
+      <div class="mb-3">
+        <label for="id_password" class="form-label">Password</label>
+        <div class="input-group">
+          {{ form.password }}
+          <button class="btn btn-outline-secondary toggle-password" type="button" tabindex="-1">
+            <i class="bi bi-eye-slash"></i>
+          </button>
+        </div>
+        {% if form.password.errors %}
+          <div class="text-danger small">{{ form.password.errors|striptags }}</div>
+        {% endif %}
+      </div>
+
+      <!-- Confirm Password -->
+      <div class="mb-3">
+        <label for="id_confirm_password" class="form-label">Confirm Password</label>
+        <div class="input-group">
+          {{ form.confirm_password }}
+          <button class="btn btn-outline-secondary toggle-password" type="button" tabindex="-1">
+            <i class="bi bi-eye-slash"></i>
+          </button>
+        </div>
+        {% if form.confirm_password.errors %}
+          <div class="text-danger small">{{ form.confirm_password.errors|striptags }}</div>
+        {% endif %}
+      </div>
+
+      <!-- Submit -->
+      <div class="d-grid">
+        <button type="submit" class="btn btn-primary">Register</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+<div class="text-center mt-4 border-top pt-3" style="background-color: #1a1a1a; color: #ffffff; padding: 20px 0;">
+  <p class="mb-0" style="margin: 0;">&copy; 2025 Plate Tracker. All rights reserved.</p>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".toggle-password").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        const input = this.previousElementSibling;
+        const icon = this.querySelector("i");
+
+        if (input.type === "password") {
+          input.type = "text";
+          icon.classList.remove("bi-eye-slash");
+          icon.classList.add("bi-eye");
+        } else {
+          input.type = "password";
+          icon.classList.remove("bi-eye");
+          icon.classList.add("bi-eye-slash");
+        }
+      });
+    });
+  });
+</script>
+{% endblock %}
