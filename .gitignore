@@ -8,6 +8,10 @@ venv/
 env/
 .venv/
 
+**/migrations/
+**/migrations/*.py
+**/migrations/*.pyc
+
 # Django stuff:
 *.log
 *.pot

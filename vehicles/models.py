@@ -1,5 +1,8 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from datetime import timedelta
+from django.utils import timezone
+
 
 User = get_user_model()
 
@@ -29,6 +32,30 @@ class Vehicle(models.Model):
         self.vehicle_name = self.vehicle_name.upper().strip()
         self.model = self.model.upper().strip()
         super().save(*args, **kwargs)
+
+    def save(self, *args, **kwargs):
+        self.plate_number = self.plate_number.upper().strip()
+        self.vehicle_name = self.vehicle_name.upper().strip()
+        self.model = self.model.upper().strip()
+
+        is_new = self.pk is None  # Check if this is a new Vehicle (no primary key yet)
+
+        super().save(*args, **kwargs)  # Save vehicle first
+
+        # Calculate reminder date (e.g., 7 days before expiry)
+        reminder_date = self.expiry_date - timedelta(days=7)
+
+        # Create or update the reminder for this vehicle and user
+        from reminders.models import Reminder  # Import here to avoid circular imports
+
+        Reminder.objects.update_or_create(
+            vehicle=self,
+            user=self.user,
+            defaults={
+                'reminder_date': reminder_date,
+                'status': 'pending',
+            }
+        )
 
     def __str__(self):
         return f"{self.plate_number} ({self.vehicle_name})"

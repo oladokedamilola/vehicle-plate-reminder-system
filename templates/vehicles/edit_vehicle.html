@@ -56,6 +56,7 @@
           </div>
         </div>
       </form>
+
     </div>
   </div>
 </div>
@@ -104,10 +105,6 @@
 {% block extra_js %}
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-  const vehicleInput = document.getElementById('id_vehicle_image');
-  const vehicleFilename = document.getElementById('vehicleImageFilename');
-  const vehicleSelectBtn = document.getElementById('vehicleImageSelectBtn');
-
   const plateInput = document.getElementById('id_plate_image');
   const plateFilename = document.getElementById('plateImageFilename');
   const plateSelectBtn = document.getElementById('plateImageSelectBtn');
@@ -119,7 +116,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   let currentInput = null;
 
-  vehicleSelectBtn.addEventListener('click', () => vehicleInput.click());
   plateSelectBtn.addEventListener('click', () => plateInput.click());
 
   function handleFileSelect(input, filenameElem) {
@@ -136,10 +132,6 @@ document.addEventListener('DOMContentLoaded', function () {
     };
     reader.readAsDataURL(file);
   }
-
-  vehicleInput.addEventListener('change', function () {
-    handleFileSelect(vehicleInput, vehicleFilename);
-  });
 
   plateInput.addEventListener('change', function () {
     handleFileSelect(plateInput, plateFilename);
@@ -192,6 +184,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 {% endblock %}
+
 
 
 {% block footer %}

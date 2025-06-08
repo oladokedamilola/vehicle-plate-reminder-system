@@ -10,7 +10,7 @@ urlpatterns = [
     path('', TemplateView.as_view(template_name='home.html'), name='home'),
     path('users/', include('users.urls')),
     path('vehicles/', include('vehicles.urls')),
-    path('reminders/', include('reminders.urls')),  # for settings, etc.
+    path('reminders/', include('reminders.urls')), 
 ]
 
 if settings.DEBUG:

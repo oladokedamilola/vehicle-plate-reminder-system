@@ -22,6 +22,25 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return self.username
 
+from django.contrib.auth import get_user_model
 
+
+User = get_user_model()
+
+class Notification(models.Model):
+    NOTIFICATION_TYPES = [
+        ('vehicle', 'Vehicle'),
+        ('reminder', 'Reminder'),
+        ('settings', 'Settings'),
+    ]
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    type = models.CharField(max_length=20, choices=NOTIFICATION_TYPES)
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.type} - {self.created_at.strftime('%Y-%m-%d %H:%M')}"
 
 

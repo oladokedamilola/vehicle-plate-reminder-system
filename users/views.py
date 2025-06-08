@@ -63,10 +63,8 @@ def dashboard(request):
     total_vehicles = vehicles.count()
     expiring_soon = vehicles.filter(expiry_date__range=[timezone.now(), timezone.now() + timedelta(days=30)]).count()
     expired = vehicles.filter(expiry_date__lt=timezone.now()).count()
-    reminders_sent = Reminder.objects.filter(user=user).count()
+    reminders_sent = Reminder.objects.filter(user=user, status = "sent").count()
 
-    # Latest vehicles (limit to 5)
-    latest_vehicles = vehicles[:5]
 
     # Pass user details to the context explicitly (optional, for clarity)
     context = {
@@ -74,7 +72,6 @@ def dashboard(request):
         'expiring_soon': expiring_soon,
         'expired': expired,
         'reminders_sent': reminders_sent,
-        'latest_vehicles': latest_vehicles,
         'current_hour': current_hour,
         'user': user,  # Not strictly necessary, but explicit in case of template extension conflicts
     }
@@ -128,3 +125,27 @@ def update_settings(request):
 
     return render(request, 'users/settings.html', {'form': form})
 
+
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import login_required
+from .models import Notification
+
+@login_required
+@require_POST
+def mark_notification_read(request, pk):
+    try:
+        notification = Notification.objects.get(pk=pk, user=request.user)
+        notification.is_read = True
+        notification.save()
+        return JsonResponse({'success': True})
+    except Notification.DoesNotExist:
+        return JsonResponse({'success': False, 'error': 'Notification not found'}, status=404)
+
+
+
+
+@login_required
+def user_notifications(request):
+    notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
+    return render(request, 'notifications/user_notifications.html', {'notifications': notifications})

@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 {% load static %}
+
+{% load humanize %}
+
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -17,86 +20,113 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
     <!-- Libraries Stylesheet -->
-    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-    <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+    {% comment %} <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" /> {% endcomment %}
 
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="css/style.css" rel="stylesheet">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
     
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-
 
     <link rel="shortcut icon" href="{% static 'pt.png' %}" type="image/x-icon">
     <!-- FontAwesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
     <style>
+      @keyframes ring {
+  0% { transform: rotate(0deg); }
+  1% { transform: rotate(30deg); }
+  3% { transform: rotate(-28deg); }
+  5% { transform: rotate(34deg); }
+  7% { transform: rotate(-32deg); }
+  9% { transform: rotate(30deg); }
+  11% { transform: rotate(-28deg); }
+  13% { transform: rotate(26deg); }
+  15% { transform: rotate(-24deg); }
+  17% { transform: rotate(22deg); }
+  19% { transform: rotate(-20deg); }
+  21% { transform: rotate(18deg); }
+  23% { transform: rotate(-16deg); }
+  25% { transform: rotate(14deg); }
+  27% { transform: rotate(-12deg); }
+  29% { transform: rotate(10deg); }
+  31% { transform: rotate(-8deg); }
+  33% { transform: rotate(6deg); }
+  35% { transform: rotate(-4deg); }
+  37% { transform: rotate(2deg); }
+  39% { transform: rotate(-1deg); }
+  41% { transform: rotate(1deg); }
+  43% { transform: rotate(0deg); }
+  100% { transform: rotate(0deg); }
+}
+
+.bell-animate {
+  animation: ring 1s ease-in-out 5;
+  transform-origin: 50% 4px; /* pivot point near top center */
+  display: inline-block;
+}
+
+
+
+
+
       #flash-messages {
-  position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 9999;
-  width: auto;
-  max-width: 90%;
-  padding: 0 20px;
-}
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 9999;
+        width: auto;
+        max-width: 90%;
+        padding: 0 20px;
+      }
 
-.messages {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
+      .messages {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
 
-.message {
-  padding: 12px 20px;
-  border-radius: 6px;
-  margin-bottom: 10px;
-  color: #fff;
-  font-weight: bold;
-  text-align: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  animation: fadein 0.5s;
-}
+      .message {
+        padding: 12px 20px;
+        border-radius: 6px;
+        margin-bottom: 10px;
+        color: #fff;
+        font-weight: bold;
+        text-align: center;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        animation: fadein 0.5s;
+      }
 
-/* Message type styles */
-.message.success {
-  background-color: #28a745;
-}
+      /* Message type styles */
+      .message.success {
+        background-color: #28a745;
+      }
 
-.message.error {
-  background-color: #dc3545;
-}
+      .message.error {
+        background-color: #dc3545;
+      }
 
-.message.warning {
-  background-color: #ffc107;
-  color: #000;
-}
+      .message.warning {
+        background-color: #ffc107;
+        color: #000;
+      }
 
-.message.info {
-  background-color: #17a2b8;
-}
+      .message.info {
+        background-color: #17a2b8;
+      }
 
-/* Fade-out animation */
-@keyframes fadeout {
-  from { opacity: 1; }
-  to { opacity: 0; }
-}
+      /* Fade-out animation */
+      @keyframes fadeout {
+        from { opacity: 1; }
+        to { opacity: 0; }
+      }
 
-
-{% comment %} /* Hover-activated dropdown */
-.hover-dropdown:hover .dropdown-menu {
-  display: block;
-  margin-top: 0.5rem;
-}
-.hover-dropdown .dropdown-menu {
-  display: none;
-} {% endcomment %}
 
       .navbar-dark .nav-link {
         color: rgba(255, 255, 255, 0.85);
@@ -192,34 +222,29 @@
         }
       }
     </style>
-<style>
-  /* Remove the white border or outline when focusing on the profile image */
-  .navbar .dropdown-toggle img {
-    border: none !important;
-    box-shadow: none !important;
-    outline: none !important;
-  }
+    <style>
+    /* Remove the white border or outline when focusing on the profile image */
+    .navbar .dropdown-toggle img {
+      border: none !important;
+      box-shadow: none !important;
+      outline: none !important;
+    }
 
-  /* Ensure the border and box-shadow are removed when hovering, focusing, or activating the image */
-  .navbar .dropdown-toggle img:hover,
-  .navbar .dropdown-toggle img:focus,
-  .navbar .dropdown-toggle img:active {
-    border: none !important;
-    box-shadow: none !important;
-    outline: none !important;
-  }
+    /* Ensure the border and box-shadow are removed when hovering, focusing, or activating the image */
+    .navbar .dropdown-toggle img:hover,
+    .navbar .dropdown-toggle img:focus,
+    .navbar .dropdown-toggle img:active {
+      border: none !important;
+      box-shadow: none !important;
+      outline: none !important;
+    }
 
-  /* Remove the white focus outline on the anchor tag for profile dropdown */
-  .navbar .dropdown-toggle:focus {
-    outline: none !important;
-    box-shadow: none !important;
-  }
-</style>
-
-
-
-
-
+    /* Remove the white focus outline on the anchor tag for profile dropdown */
+    .navbar .dropdown-toggle:focus {
+      outline: none !important;
+      box-shadow: none !important;
+    }
+  </style>
 
 
   </head>
@@ -258,6 +283,38 @@
         </li>
 
         {% if user.is_authenticated %}
+        <!-- Notifications dropdown -->
+        <li class="nav-item dropdown me-3">
+          <a class="nav-link position-relative" href="#" id="notificationsDropdown" role="button"
+            data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-bell fs-4 {% if notifications_unread_count > 0 %}bell-animate{% endif %}"></i>
+            {% if notifications_unread_count > 0 %}
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+              {{ notifications_unread_count }}
+              <span class="visually-hidden">unread notifications</span>
+            </span>
+            {% endif %}
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end p-2" aria-labelledby="notificationsDropdown" style="min-width: 300px; max-height: 400px; overflow-y: auto;">
+            {% if recent_notifications %}
+              {% for notification in recent_notifications %}
+              <li>
+                <a href="#" class="dropdown-item notification-item {% if not notification.is_read %}fw-bold{% endif %}"
+                  data-id="{{ notification.id }}">
+                  {{ notification.message|truncatechars:60 }}
+                  <br>
+                  <small class="text-muted">{{ notification.created_at|naturaltime }}</small>
+                </a>
+              </li>
+              {% endfor %}
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item text-center" href="{% url 'user_notifications' %}">See all notifications</a></li>
+            {% else %}
+              <li class="dropdown-item text-center text-muted">No notifications</li>
+            {% endif %}
+          </ul>
+        </li>
+
         <!-- Profile Dropdown -->
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown" role="button"
@@ -276,7 +333,9 @@
             <li><a class="dropdown-item text-danger" href="{% url 'logout' %}">Logout</a></li>
           </ul>
         </li>
+
         {% else %}
+        <!-- Not authenticated: Sign In / Sign Up -->
         <li class="nav-item">
           <a class="nav-link {% if request.resolver_match.url_name == 'login' %}active{% endif %}" href="{% url 'login' %}">Sign In</a>
         </li>
@@ -420,17 +479,10 @@ document.addEventListener("DOMContentLoaded", function () {
         <!-- JavaScript Libraries -->
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="lib/chart/chart.min.js"></script>
-        <script src="lib/easing/easing.min.js"></script>
-        <script src="lib/waypoints/waypoints.min.js"></script>
-        <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-        <script src="lib/tempusdominus/js/moment.min.js"></script>
-        <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
-        <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
-    
+  
         <!-- Template Javascript -->
-        <script src="js/main.js"></script>
-        <script src="js/toggler.js"></script>
+        <script src="static/js/main.js"></script>
+        <script src="static/js/toggler.js"></script>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
@@ -452,6 +504,48 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
+</script>
+
+<script>
+  <script>
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.notification-item').forEach(item => {
+    item.addEventListener('click', function(e) {
+      e.preventDefault();
+      const notifId = this.getAttribute('data-id');
+      const elem = this;
+
+      fetch(`/notifications/mark_read/${notifId}/`, {
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+          'Content-Type': 'application/json'
+        },
+      })
+      .then(res => res.json())
+      .then(data => {
+        if(data.success) {
+          elem.classList.remove('fw-bold');
+          // Optionally decrement unread count badge
+          const badge = document.querySelector('.badge.bg-danger');
+          if(badge) {
+            let count = parseInt(badge.textContent);
+            if(count > 1) {
+              badge.textContent = count - 1;
+            } else {
+              badge.remove();
+            }
+          }
+        } else {
+          alert('Failed to mark notification as read');
+        }
+      })
+      .catch(() => alert('Error marking notification as read'));
+    });
+  });
+});
+</script>
+
 </script>
   </body>
 </html>

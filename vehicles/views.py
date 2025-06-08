@@ -7,7 +7,7 @@ from django.utils.timezone import now
 from reminders.models import Reminder 
 from django.db import IntegrityError
 from django.core.paginator import Paginator
-
+from datetime import date
 
 @login_required
 def add_vehicle(request):
@@ -130,4 +130,14 @@ def user_vehicles(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    return render(request, 'vehicles/user_vehicles.html', {'page_obj': page_obj})
+    # Get current view mode from query param (default to 'grid')
+    view_mode = request.GET.get('view', 'grid')
+    if view_mode not in ['grid', 'table']:
+        view_mode = 'grid'
+
+    context = {
+        'page_obj': page_obj,
+        'today': date.today(),
+        'view_mode': view_mode,
+    }
+    return render(request, 'vehicles/user_vehicles.html', context)

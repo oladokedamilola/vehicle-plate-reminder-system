@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block title %}Notifications | Plate Tracker{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+  <h2>Your Notifications</h2>
+  <ul class="list-group">
+    {% for notification in notifications %}
+      <li class="list-group-item {% if not notification.is_read %}list-group-item-info{% endif %}">
+        {{ notification.message }} <br>
+        <small class="text-muted">{{ notification.created_at|naturaltime }}</small>
+      </li>
+    {% empty %}
+      <li class="list-group-item">No notifications found.</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}
+
+
+{% block footer %}
+
+{% endblock %}

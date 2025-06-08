@@ -101,11 +101,6 @@
 {% block extra_js %}
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-  // Inputs and buttons
-  const vehicleInput = document.getElementById('id_vehicle_image');
-  const vehicleFilename = document.getElementById('vehicleImageFilename');
-  const vehicleSelectBtn = document.getElementById('vehicleImageSelectBtn');
-
   const plateInput = document.getElementById('id_plate_image');
   const plateFilename = document.getElementById('plateImageFilename');
   const plateSelectBtn = document.getElementById('plateImageSelectBtn');
@@ -115,19 +110,18 @@ document.addEventListener('DOMContentLoaded', function () {
   const changeImageBtn = document.getElementById('changeImageBtn');
   const confirmImageBtn = document.getElementById('confirmImageBtn');
 
-  let currentInput = null; // Track which image input triggered the modal
+  let currentInput = null;
 
   // Trigger file selection
-  vehicleSelectBtn.addEventListener('click', () => vehicleInput.click());
   plateSelectBtn.addEventListener('click', () => plateInput.click());
 
-  // File selection handler
-  function handleFileSelect(input, filenameElem) {
-    const file = input.files[0];
+  // Handle file select
+  plateInput.addEventListener('change', function () {
+    const file = this.files[0];
     if (!file) return;
 
-    currentInput = input;
-    filenameElem.value = file.name;
+    currentInput = this;
+    plateFilename.value = file.name;
 
     const reader = new FileReader();
     reader.onload = function (e) {
@@ -135,21 +129,13 @@ document.addEventListener('DOMContentLoaded', function () {
       imagePreviewModal.show();
     };
     reader.readAsDataURL(file);
-  }
-
-  vehicleInput.addEventListener('change', function () {
-    handleFileSelect(vehicleInput, vehicleFilename);
-  });
-
-  plateInput.addEventListener('change', function () {
-    handleFileSelect(plateInput, plateFilename);
   });
 
   changeImageBtn.addEventListener('click', function () {
     imagePreviewModal.hide();
     if (currentInput) {
       currentInput.value = '';
-      currentInput.click(); // Trigger reselect
+      currentInput.click();
     }
   });
 
@@ -161,13 +147,19 @@ document.addEventListener('DOMContentLoaded', function () {
   // Form validation
   const vehicleForm = document.getElementById('vehicleForm');
   vehicleForm.addEventListener('submit', function (event) {
-    const registrationDate = document.getElementById('id_registration_date').value;
-    const expiryDate = document.getElementById('id_expiry_date').value;
+    const regDateStr = document.getElementById('id_registration_date').value;
+    const expDateStr = document.getElementById('id_expiry_date').value;
 
-    if (!registrationDate || !expiryDate) return;
+    if (!regDateStr || !expDateStr) return;
 
-    const regDate = new Date(registrationDate);
-    const expDate = new Date(expiryDate);
+    const regDate = new Date(regDateStr);
+    const expDate = new Date(expDateStr);
+
+    if (isNaN(regDate.getTime()) || isNaN(expDate.getTime())) {
+      event.preventDefault();
+      showValidationModal("Please enter valid dates.");
+      return false;
+    }
 
     if (regDate.getTime() === expDate.getTime()) {
       event.preventDefault();
@@ -175,8 +167,7 @@ document.addEventListener('DOMContentLoaded', function () {
       return false;
     }
 
-    const msPerDay = 24 * 60 * 60 * 1000;
-    const diffDays = Math.floor((expDate - regDate) / msPerDay);
+    const diffDays = Math.floor((expDate - regDate) / (1000 * 60 * 60 * 24));
 
     if (diffDays < 30) {
       event.preventDefault();
@@ -193,6 +184,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 {% endblock %}
+
 
 {% block footer %}
 <div class="text-center mt-4 border-top pt-3" style="background-color: #1a1a1a; color: #ffffff; padding: 20px 0;">
